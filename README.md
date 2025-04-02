@@ -2,7 +2,8 @@
 
 Collection of ansible roles to deploy docker containers. 
 
-## Global/Per-Machine variables
+##  Variables
+Global/Per-Machine variables:
 ```
 DOCKER_PATH: '/path/to/docker/bind/mount'
 MY_DOMAIN: 'mydomain.tld'
@@ -11,12 +12,12 @@ USER_NAME: 'linux-username'
 MY_EMAIL: 'linux-user@email'
 ```
 
-## Role variables
+Role variables:
 Will be listed at the top of the yml file
 
 
 ## Roles
-Provisioning
+Provisioning:
 - timezone
 - apt-update-upgrade
 - apt-install
@@ -26,7 +27,7 @@ Provisioning
 - dotfiles
 - ssh-keys-github
 
-Docker
+Docker:
 - docker-install
 - dockershare-mount-nfs
 - dockershare-backuptask
