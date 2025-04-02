@@ -13,3 +13,17 @@ MY_EMAIL: 'linux-user@email'
 
 ## Role variables
 Will be listed at the top of the yml file
+
+
+## Roles
+Provisioning
+- timezone
+- apt-update-upgrade
+- apt-install
+- unattended-upgrades
+- motd-clean
+- dotfiles
+- docker-install
+- dockershare-mount-nfs
+- dockershare-backuptask
+- mount-photoshare
