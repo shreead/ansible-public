@@ -1,0 +1,6 @@
+---
+- name: Download SSH keys from Github
+  ansible.posix.authorized_key:
+    user: '{{ USER_NAME }}'
+    state: present
+    key: https://github.com/shreead.keys

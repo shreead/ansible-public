@@ -24,6 +24,7 @@ Provisioning
 - motd-clean
 - motd-hide-esm
 - dotfiles
+- ssh-keys-github
 
 Docker
 - docker-install
