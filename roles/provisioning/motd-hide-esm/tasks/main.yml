@@ -1,0 +1,16 @@
+---
+- name: Hide ESM package alerts in MOTD
+  ansible.builtin.file:
+    path: /var/lib/update-notifier/hide-esm-in-motd
+    state: touch
+    modification_time: preserve
+    access_time: preserve
+  when: ansible_distribution == 'Ubuntu'
+  register: esm_hidden
+
+- name: Refresh updates-available message without ESM
+  ansible.builtin.command:
+    cmd: /usr/lib/update-notifier/update-motd-updates-available --force
+  register: shell_output
+  changed_when: shell_output.rc != 0
+  when: esm_hidden is changed

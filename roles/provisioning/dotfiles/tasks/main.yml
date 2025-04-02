@@ -1,0 +1,15 @@
+---
+- name: Copy configuration files
+  ansible.builtin.copy:
+    src: "{{ item.key }}"
+    dest: "/home/{{ USER_NAME }}/{{ item.value }}"
+    owner: '{{ USER_NAME }}'
+    group: '{{ USER_NAME }}'
+    mode: '0644'
+  loop:
+    - key: 'profile.txt'
+      value: '.profile'
+    - key: 'bashrc.txt'
+      value: '.bashrc'
+    - key: 'nanorc.txt'
+      value: '.nanorc'
