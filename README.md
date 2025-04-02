@@ -22,8 +22,10 @@ Provisioning
 - apt-install
 - unattended-upgrades
 - motd-clean
+- motd-hide-esm
 - dotfiles
+
+Docker
 - docker-install
 - dockershare-mount-nfs
 - dockershare-backuptask
-- mount-photoshare
