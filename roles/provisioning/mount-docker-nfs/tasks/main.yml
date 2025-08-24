@@ -1,0 +1,7 @@
+- name: Mount Docker NFS volume
+  ansible.posix.mount:
+    src: '10.10.20.20:/mnt/rusty/docker/{{ inventory_hostname }}'
+    path: /mnt/docker
+    opts: defaults
+    state: mounted
+    fstype: nfs

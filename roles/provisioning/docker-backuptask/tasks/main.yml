@@ -1,0 +1,8 @@
+- name: Daily docker data backup with cron, listed in /etc/cron.d/ansible-tasks
+  ansible.builtin.cron:
+    name: "Backup Docker directory"
+    minute: "{{ 60 | random(seed=inventory_hostname) }}"
+    hour: "2"
+    job: "rsync -axXh --delete {{ docker_path }}/ /mnt/docker/ > /dev/null"
+    user: root
+    cron_file: ansible-tasks

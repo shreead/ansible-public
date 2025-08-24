@@ -1,0 +1,39 @@
+- name: Install zfs packages
+  ansible.builtin.apt:
+    name:
+      - zfsutils-linux
+    state: present
+    update_cache: true
+
+- name: Check to see if tank exists
+  ansible.builtin.command: zpool list "tank"
+  register: zpool_check
+  ignore_errors: true
+  changed_when: false
+
+- name: Create zpool manually
+  ansible.builtin.pause:
+    prompt: "Create zpool tank manually. sudo zpool create tank /dev/disk/by-id/whateverdisk \nPress [ENTER] when ready or [Ctrl+C] to abort:"
+    # sudo blkdiscard /dev/sda (-f) if drive needs to be wiped
+  when: zpool_check.rc != 0
+
+- name: Check mount status using shell command
+  ansible.builtin.command: zfs get -H -o value mounted tank/docker
+  register: zfs_mount_status
+  changed_when: false
+
+- name: Create docker dataset
+  community.general.zfs:
+    name: tank/docker
+    state: present
+    extra_zfs_properties:
+      mountpoint: "{{ docker_path }}"
+  when: zfs_mount_status.stdout != "yes"
+
+- name: Change directory permissions
+  ansible.builtin.file:
+    path: "{{ docker_path }}"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
