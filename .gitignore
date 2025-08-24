@@ -1,0 +1,10 @@
+**/*.env
+**/*.db
+**/env.j2
+vars/*
+
+**/vars.yml
+**/vars/main.yml
+
+inventory
+vault.yml
