@@ -1,0 +1,27 @@
+[DEFAULT]
+# If [maxretry] failed login attempts within [findtime] block for [bantime]
+bantime  = 10m
+findtime  = 10m
+maxretry = 5
+
+
+destemail = root@localhost
+sender = root@<fq-hostname>
+sendername = Fail2Ban
+mta = sendmail
+banaction = iptables-multiport
+banaction_allports = iptables-allports
+action_mwl = %(action_)s
+             %(mta)s-whois-lines[sender="%(sender)s", dest="%(destemail)s", logpath="%(logpath)s", chain="%(chain)s"]
+
+[sshd]
+enabled = true
+port = ssh
+filter = sshd
+banaction = ufw
+backend = systemd
+logpath  = /var/log/auth.log
+maxretry = 3
+findtime = 1d
+bantime  = 1w
+ignoreip  = 127.0.0.1/8

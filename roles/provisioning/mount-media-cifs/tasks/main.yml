@@ -1,0 +1,17 @@
+- name: Create cifs-credentials-media for media
+  ansible.builtin.copy:
+    content: |
+      username={{ cifs_username_media }}
+      password={{ cifs_password_media }}
+    dest: "/etc/cifs-credentials-media"
+    mode: "0600"
+
+- name: Setup media share in /etc/fstab
+  ansible.posix.mount:
+    src: //10.10.20.20/media
+    path: /mnt/media
+    opts: "credentials=/etc/cifs-credentials-media"
+    fstype: cifs
+    state: mounted
+    dump: 0
+    passno: 0

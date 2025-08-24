@@ -1,0 +1,75 @@
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# bash history
+export HISTCONTROL=ignoreboth
+export HISTSIZE=1000
+export HISTFILESIZE=2000
+shopt -s histappend
+shopt -s checkwinsize
+
+# turn off color prompt
+PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=35:note=36:caret=32:locus=00:quote=00'
+
+# Disable green highlighting of folder names in shared folders, makes it visible on green background
+LS_COLORS="${LS_COLORS:-}ow=1;34:"
+export LS_COLORS
+
+# To do bash auto-completion using tab with all commands,
+# install bash-completion package if not present.
+# For more info: https://github.com/scop/bash-completion
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+
+# ALIASES:
+## ls a=hidden, l=long list, h=human readable size, F=append eg executable* dir/ links@, t=sort by new
+alias ll='ls -alhF'  
+alias lt='ls -alhFt'
+alias cd..='cd ..'
+
+## docker related:
+alias docker-list-names='docker ps -a --format "table {{.Names}}" | (read -r; printf "%s\n" "$REPLY"; sort )'
+alias docker-list-ports='docker container ls -a --format "- {{.Names}}\t{{.Ports}}"'
+alias docker-list-ip='docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}} {{.Name}}" $(docker ps -q)'
+
+
+# FUNCTIONS:
+## Make directory and go into that directory
+mkcd () {
+  if [ -z "$1" ]; then
+    echo "Directory name invalid" >&2
+    return 1
+  else
+    mkdir -p -- "$1" && cd -P -- "$1"
+  fi
+}
+
+# Docker outputs logs to stderr not stdout, redirect output for the specified container and
+# pass remaining arguments to grep
+# 
+# Usage:
+#   docker-log [container name] [find this]
+#   
+docker-log () {
+  docker logs "$1" 2>&1 | grep "${@:2}"
+}

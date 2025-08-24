@@ -1,0 +1,27 @@
+// Packages to upgrade
+Unattended-Upgrade::Allowed-Origins {
+        "${distro_id}:${distro_codename}";
+        "${distro_id}:${distro_codename}-security";
+        "${distro_id}:${distro_codename}-updates";
+        "${distro_id}ESMApps:${distro_codename}-apps-security";
+        "${distro_id}ESM:${distro_codename}-infra-security";
+};
+
+Unattended-Upgrade::AutoFixInterruptedDpkg "true";      # Fix interrupted upgrades
+Unattended-Upgrade::MinimalSteps "true";                # Use minimal steps
+Unattended-Upgrade::InstallOnShutdown "false";          # Don't install on shutdown
+Unattended-Upgrade::Remove-Unused-Dependencies "true";  # Clean up
+
+// Notify via email
+Unattended-Upgrade::Mail "{{ my_email }}";
+Unattended-Upgrade::MailOnlyOnError "true";
+Unattended-Upgrade::Sender "unattended-upgrades@{{ inventory_hostname }}";
+
+// Reboot automatically
+Unattended-Upgrade::Automatic-Reboot "true";
+Unattended-Upgrade::Automatic-Reboot-WithUsers "false";
+Unattended-Upgrade::Automatic-Reboot-Time "04:00";
+
+// Log verbose
+Unattended-Upgrade::Verbose "true";
+Unattended-Upgrade::SyslogEnable "true";

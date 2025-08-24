@@ -1,0 +1,7 @@
+- name: Mount media NFS volume
+  ansible.posix.mount:
+    src: "10.10.20.20:/mnt/rusty/media"
+    path: /mnt/media
+    opts: defaults
+    state: mounted
+    fstype: nfs

@@ -1,0 +1,5 @@
+- name: Refresh ESM MOTD
+  ansible.builtin.command:
+    cmd: /usr/lib/update-notifier/update-motd-updates-available --force
+  register: shell_output
+  changed_when: shell_output.rc != 0

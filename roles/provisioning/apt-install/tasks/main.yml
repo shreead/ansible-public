@@ -1,0 +1,36 @@
+- name: Install basic packages
+  ansible.builtin.apt:
+    name:
+      - git
+      - cifs-utils
+      - nfs-common
+      - tree
+      - bash-completion
+      - mc
+      - ncdu
+    state: present
+    update_cache: true
+
+- name: Install packages if not vm
+  ansible.builtin.apt:
+    name:
+      - iperf3
+      - smartmontools
+      - lm-sensors
+      - intel-gpu-tools
+      - neofetch
+    state: present
+  when: inventory_hostname not in groups["vms"]
+
+- name: Install QEMU guest agent if VM
+  ansible.builtin.apt:
+    name: qemu-guest-agent
+    state: present
+  when: inventory_hostname in groups["vms"]
+
+- name: Start and enable QEMU guest agent if VM
+  ansible.builtin.systemd:
+    name: qemu-guest-agent
+    state: started
+    enabled: true
+  when: inventory_hostname in groups["vms"]
