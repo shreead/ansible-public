@@ -8,3 +8,5 @@ vars/*
 
 inventory
 vault.yml
+.vscode/settings.json
+.ansible/.lock
