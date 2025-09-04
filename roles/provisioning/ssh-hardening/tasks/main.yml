@@ -5,6 +5,7 @@
     owner: root
     group: root
     mode: "0600"
+    validate: "sshd -t"
 
 - name: Delete sshd_config.d directory if it exists
   ansible.builtin.file:
